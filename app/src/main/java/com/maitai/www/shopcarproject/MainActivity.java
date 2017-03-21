@@ -6,7 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.maitai.www.shopcarproject.adapter.MyShopCarAdapter;
 import com.maitai.www.shopcarproject.bean.MyProducts;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnOther;
     private RecyclerView mRv;
     private List<MyProducts> list;
+    private MyShopCarAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
         initData();
         //我就随便改改东西 试试下拉合并
         //Adapter
-
+        mAdapter = new MyShopCarAdapter(MainActivity.this,list);
+        mRv.setAdapter(mAdapter);
     }
 
     /**
@@ -62,6 +66,74 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void myClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_do:
+                //编辑
+                btnDoSomthing();
+                break;
+            case R.id.btn_all:
+                //全选
+                btnSelectAll();
+                break;
+            case R.id.btn_other:
+                //反选
+                btnCheckOther();
+                break;
+            case R.id.btn_none:
+                //全部取消
+                btnDeletAll();
+                break;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
+    private void btnCheckOther() {
+        if(mAdapter.isCbShow == true){
+            for (MyProducts p: list) {
+                if(p.isChecked() == true){
+                    p.setChecked(false);
+                }else{
+                    p.setChecked(true);
+                }
+            }
+        }else{
+            Toast.makeText(MainActivity.this, "打开编辑", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void btnDeletAll() {
+        if(mAdapter.isCbShow == true){
+            for (MyProducts p: list) {
+                p.setChecked(false);
+            }
+        }else{
+            Toast.makeText(MainActivity.this, "打开编辑", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 全选
+     */
+    private void btnSelectAll() {
+        if(mAdapter.isCbShow == true){
+            for (MyProducts p: list) {
+                p.setChecked(true);
+            }
+        }else{
+            Toast.makeText(MainActivity.this, "打开编辑", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 编辑
+     */
+    private void btnDoSomthing() {
+        if (mAdapter.isCbShow == false) {
+            btnDo.setText("完成");
+            mAdapter.isCbShow = true;
+        }else{
+            btnDo.setText("编辑");
+            mAdapter.isCbShow = false;
+        }
     }
 }

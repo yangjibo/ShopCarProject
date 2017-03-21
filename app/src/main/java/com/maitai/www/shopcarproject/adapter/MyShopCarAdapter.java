@@ -24,7 +24,7 @@ public class MyShopCarAdapter extends RecyclerView.Adapter<MyShopCarAdapter.MyVi
     private Context context;
     private LayoutInflater inflater;
     //单选框是否展示
-    private boolean isCbShow = false;
+    public boolean isCbShow = false;
 
     public MyShopCarAdapter(Context context, List<MyProducts> data) {
         this.context = context;
@@ -42,13 +42,19 @@ public class MyShopCarAdapter extends RecyclerView.Adapter<MyShopCarAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         //设置单选框不显示
-        if(isCbShow){
+        if(isCbShow == false){
             holder.cbSelected.setVisibility(View.GONE);
         }else{
             holder.cbSelected.setVisibility(View.VISIBLE);
         }
         //商品信息
         holder.tvShow.setText("商品:"+data.get(position).getName()+"\n单价:"+data.get(position).getPrices());
+        //设置选择事件
+        if(data.get(position).isChecked() == true){
+            holder.cbSelected.setChecked(true);
+        }else{
+            holder.cbSelected.setChecked(false);
+        }
         //设置单选狂点击事件
         holder.cbSelected.setOnClickListener(new View.OnClickListener() {
             @Override
