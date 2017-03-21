@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mRv.setLayoutManager(manager);
         //数据源
         initData();
+        //我就随便改改东西 试试下拉合并
         //Adapter
 
     }
